@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Calculadora de P.L</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+</head>
+
+<body class="bg-slate-50 text-slate-800 flex justify-center items-center min-h-screen m-0 font-sans">
+
+    
+
+    <div class="bg-white p-10 rounded-2xl shadow-lg w-[90%] max-w-225">
+        <h2 class="text-center text-2xl font-bold mb-8 text-indigo-500">
+            Coloque el numero de variables
+        </h2>
+        
+        <form method="POST" action="/restricciones">
+            <div class="grid gap-6">
+                
+                
+
+                <div class="grid  items-center justify-center gap-4">
+                    <input type="number" placeholder="Variables" name="CantVar" class="w-full p-3 border border-slate-200 rounded-lg outline-none transition-all focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10">
+                </div>
+
+            
+
+            </div>
+
+            <h2 class="text-center text-2xl font-bold mb-8 text-indigo-500 pt-5">
+                Seleccione el metodo a utilizar
+            </h2>
+
+            <div class="grid grid-cols-3 items-center gap-4 border border-slate-200 rounded-lg p-4">
+  
+                <label class="relative cursor-pointer">
+                    <input type="radio" name="metodo" value="simplex" class="peer sr-only">
+                    <div class="flex justify-center items-center p-6 border border-slate-300 rounded-lg bg-white text-slate-600 font-semibold transition-all 
+                    peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 hover:bg-slate-50 hover:text-blue-500 text-center">
+                    MÉTODO SIMPLEX
+                    </div>
+                </label>
+
+                <label class="relative cursor-pointer">
+                    <input type="radio" name="metodo" value="grafico" class="peer sr-only">
+                    <div class="flex justify-center items-center p-6 border border-slate-300 rounded-lg bg-white text-slate-600 font-semibold transition-all 
+                    peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 hover:bg-slate-50 hover:text-blue-500 text-center">
+                    MÉTODO GRÁFICO
+                    </div>
+                </label>
+
+                <label class="relative cursor-pointer">
+                    <input type="radio" name="metodo" value="dos-pasos" class="peer sr-only">
+                    <div class="flex justify-center items-center p-6 border border-slate-300 rounded-lg bg-white text-slate-600 font-semibold transition-all 
+                    peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 hover:bg-slate-50 hover:text-blue-500 text-center">
+                    MÉTODO DOS PASOS
+                    </div>
+                </label>
+
+            </div>
+            <button type="submit" class="block w-full mt-10 p-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-base font-semibold transition-colors duration-300">
+                ENVIAR
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>
+
+</body>
+
+</html>
