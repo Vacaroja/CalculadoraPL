@@ -1,0 +1,85 @@
+from SimplexMethod import SimplexMethod, SimplexMethodTwoFases, add_holgura_or_artifical_val
+
+
+def Twofases(old_matrix,old_name_variable,igualidades,old_variable_standard,isMin):
+    
+    matrix,name_variable = add_holgura_or_artifical_val(old_matrix,igualidades,old_name_variable)
+
+    matrix_first_fase = add_artifical_row(matrix,name_variable)
+
+    matrix_first_fase = definir_fila_artificial(matrix_first_fase,name_variable)
+
+    matrix,name_variable,variable_standard = SimplexMethodTwoFases(matrix_first_fase,name_variable,old_variable_standard,isMin=True)
+    print("Resultado Primera fase:")
+    for e in matrix:
+        print(e)
+    print(name_variable)
+    print(variable_standard)
+    matrix,name_variable = delete_artificial_vars(matrix,name_variable)
+    matrix,name_variable,variable_standard,igualidades = SimplexMethod(matrix,name_variable,igualidades,variable_standard,isMin=isMin)
+    print("Resultado Final:")
+    for e in matrix:
+        print(e)
+    print(name_variable)
+    print(variable_standard)
+    return matrix,name_variable,variable_standard
+
+def definir_fila_artificial(matrix,name_variable):
+    fila_artificial = 0
+    total_matrix = len(matrix[0])
+    suma_artificial = 0
+    matriz_nueva = []
+    for i in range(len(name_variable)):
+        if "R" in name_variable[i]:
+            fila_artificial += 1
+    for e in range(total_matrix):
+        suma_artificial = 0
+        for i in range(fila_artificial+1):
+            suma_artificial += matrix[i][e]
+        matriz_nueva.append(suma_artificial)
+    matrix[0] = matriz_nueva
+    return matrix
+    
+
+def delete_artificial_vars(matrix,name_variable):
+    indices_a_borrar = []
+    for i in range(len(name_variable)):
+        if "R" in name_variable[i]:
+            indices_a_borrar.append(i)
+    
+    for index in sorted(indices_a_borrar,reverse=True):
+        for row in matrix:
+            del row[index]
+        del name_variable[index]
+    
+    return matrix,name_variable
+
+def add_artifical_row(old_matrix,var_names):
+    matrix = old_matrix.copy()
+    indices_a_cambiar = [1]
+    
+    for i in range(1,len(var_names)):
+        if "R" in var_names[i]:
+            indices_a_cambiar.append(-1)
+        else:
+            indices_a_cambiar.append(0)
+    indices_a_cambiar.append(matrix[0][-1])
+    del matrix[0]
+    matrix.insert(0,indices_a_cambiar)
+    return matrix
+
+matrix=[
+    [1, -4, -1, 0],  # Z, x1, x2, RHS
+    [0, 3, 1, 3],  # Restricción 1
+    [0, 4, 3, 6],  # Restricción 2
+    [0, 1, 2, 4]  # Restricción 3
+]
+
+igualidades = ["=","=", ">=", "<="]
+
+variable_standard = ['Z']
+
+name_variable = ["Z","X1","X2"]
+
+matrix, name_variable, variable_standard = Twofases(matrix,name_variable,igualidades,variable_standard,isMin=True)
+
