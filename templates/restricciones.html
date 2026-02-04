@@ -17,8 +17,9 @@
         Funcion objetivo
     </h2>
 
-    <form id="form-restricciones">
+    <form id="form-restricciones" method="POST" action="/resultados">
         <input type="hidden" name="metodo" value="{{ metodo }}">
+        <input type="hidden" name="cantVar" value="{{ cantVar }}">
 
         <div class="flex items-center gap-2 bg-slate-50 p-4 rounded-lg overflow-x-auto border border-slate-100 shadow-inner">
             
@@ -37,15 +38,14 @@
             <input type="number" name="res[]" value="1" step="any" placeholder="Z" required 
                 class="w-24 shrink-0 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
             Z
-                
         </div>
 
         <h2 class="text-center text-2xl font-bold mb-8 pt-8 text-indigo-500">
             Restricciones
         </h2>
 
-        <button type="button" onclick="addRestrictionRow()" class="block w-fit mt-6 p-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-base font-semibold transition-colors duration-300 shadow-md">
-            ENVIAR DATOS
+        <button type="button" onclick="addRestrictionRow()" class="block w-full mt-6 p-4 bg-green-600 hover:bg-green-700 text-white rounded-lg text-bl text-base font-semibold transition-colors duration-300 shadow-md">
+            Aggregar Restricción
         </button>
 
         <div id="contenedor-restricciones" class="mt-6 flex flex-col gap-4">
