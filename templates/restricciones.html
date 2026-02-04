@@ -26,7 +26,7 @@
                 <div class="flex items-center gap-2 shrink-0">
                     <input type="number" name="x{{ i+1 }}[]" step="any" placeholder="X{{ i+1 }}" required
                         class="w-24 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
-                    
+                    X{{ i+1 }}
                     {% if i < cantVar - 1 %}
                         <span class="font-bold text-indigo-500">+</span>
                     {% endif %}
@@ -34,30 +34,38 @@
             {% endfor %}
 
             <span class="font-bold text-indigo-500 mx-2">=</span>
-            <input type="number" name="res[]" step="any" placeholder="R" required 
+            <input type="number" name="res[]" value="1" step="any" placeholder="Z" required 
                 class="w-24 shrink-0 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+            Z
+                
         </div>
 
         <h2 class="text-center text-2xl font-bold mb-8 pt-8 text-indigo-500">
             Restricciones
         </h2>
 
-        <div class="flex items-center gap-2 bg-slate-50 p-4 rounded-lg overflow-x-auto border border-slate-100 shadow-inner">
-            
-            {% for i in range(cantVar) %}
-                <div class="flex items-center gap-2 shrink-0">
-                    <input type="number" name="x{{ i+1 }}[]" step="any" placeholder="X{{ i+1 }}" required
-                        class="w-24 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
-                    
-                    {% if i < cantVar - 1 %}
-                        <span class="font-bold text-indigo-500">+</span>
-                    {% endif %}
-                </div>
-            {% endfor %}
+        <button type="button" onclick="addRestrictionRow()" class="block w-fit mt-6 p-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-base font-semibold transition-colors duration-300 shadow-md">
+            ENVIAR DATOS
+        </button>
 
-            <span class="font-bold text-indigo-500 mx-2">=</span>
-            <input type="number" name="res[]" step="any" placeholder="R" required 
-                class="w-24 shrink-0 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+        <div id="contenedor-restricciones" class="mt-6 flex flex-col gap-4">
+            <div class="flex items-center gap-2 bg-slate-50 p-4 rounded-lg overflow-x-auto border border-slate-100 shadow-inner fila-restriccion">
+            
+                {% for i in range(cantVar) %}
+                    <div class="flex items-center gap-2 shrink-0">
+                        <input type="number" name="x{{ i+1 }}[]" step="any" placeholder="X{{ i+1 }}" required
+                            class="w-24 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                        X{{ i+1 }}
+                        {% if i < cantVar - 1 %}
+                            <span class="font-bold text-indigo-500">+</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <span class="font-bold text-indigo-500 mx-2">=</span>
+                <input type="number" name="res[]" step="any" placeholder="Sol" required 
+                    class="w-24 shrink-0 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+            </div>
         </div>
 
         <h2 class="text-center text-2xl font-bold mb-8 pt-8 text-indigo-500">
@@ -92,6 +100,7 @@
     </form>
 </div>
 
+<script src="{{ url_for('static', filename='javascript/add_rows_restrictions.js') }}"></script>
 </body>
 </html>
 
