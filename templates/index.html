@@ -17,16 +17,12 @@
             Coloque el numero de variables
         </h2>
         
-        <form method="POST" action="/restricciones">
+        <form method="POST" action="/restricciones" id="formRestricciones">
             <div class="grid gap-6">
-                
-                
 
                 <div class="grid  items-center justify-center gap-4">
-                    <input type="number" placeholder="Variables" name="CantVar" class="w-full p-3 border border-slate-200 rounded-lg outline-none transition-all focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10">
+                    <input type="number" value="2" min="2" placeholder="Variables" name="CantVar" id="CantVar" class="w-full p-3 border border-slate-200 rounded-lg outline-none transition-all focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10">
                 </div>
-
-            
 
             </div>
 
@@ -35,9 +31,9 @@
             </h2>
 
             <div class="grid grid-cols-3 items-center gap-4 border border-slate-200 rounded-lg p-4">
-  
+
                 <label class="relative cursor-pointer">
-                    <input type="radio" name="metodo" value="simplex" class="peer sr-only">
+                    <input type="radio" name="metodo" value="simplex" class="peer sr-only" checked>
                     <div class="flex justify-center items-center p-6 border border-slate-300 rounded-lg bg-white text-slate-600 font-semibold transition-all 
                     peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 hover:bg-slate-50 hover:text-blue-500 text-center">
                     MÉTODO SIMPLEX
@@ -66,6 +62,7 @@
             </button>
         </form>
     </div>
+    <script src="{{ url_for('static', filename='javascript/validDatos.js') }}"></script>
 
 </body>
 </html>
