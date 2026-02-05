@@ -1,5 +1,4 @@
 def ordenador(diccionario):
-    lista_inicial = []
     lista_inicial = [list(map(float, v)) for k, v in diccionario.items() if '[]' in k]
     
     lista_traspuesta = list(zip(*lista_inicial))
@@ -9,10 +8,12 @@ def ordenador(diccionario):
 
 def add_zeros(matrix):
     max_length = len(matrix)
-    
+    matriz_nueva = matrix.copy()
     for i in range(max_length):
         if i == 0:
-            matrix[i].append(0)
+            matriz_nueva[i].append(0)
         else:
-            matrix[i].insert(0, 0)
-    return matrix
+            
+            matriz_nueva[i].insert(0, 0)
+    
+    return matriz_nueva
