@@ -1,50 +1,46 @@
-def SimplexMethod_withHolgura(matrix,name_variable,igualidades,variable_standard,isMin  ):
-    matrix,name_variable = add_holgura_or_artifical_val(matrix,igualidades,name_variable)
-    matrix,name_variable,variable_standard = SimplexMethod(matrix,name_variable,igualidades,variable_standard,isMin)
-    return matrix,name_variable,variable_standard
+import copy
 
 
-def SimplexMethod(old_matrix,name_variable,igualidades,variable_standard,isMin):
-    valor = 0
+def SimplexMethod(old_matrix,old_name_variable,igualidades,variable_standard,isMin):
+    matriz_historica = []
+    
     if isMin:
         matrix,igualidades = convert_min_to_max(old_matrix,igualidades)
     else:
         matrix = old_matrix.copy()
+    matrix,name_variable = add_holgura_or_artifical_val(matrix,igualidades,old_name_variable)
+    matriz_historica.append(copy.deepcopy(matrix))
+    
     while True:
-        valor += 1 
         pivote_row, pivote_col = encontrar_pivote(matrix,isMin)
-        if valor == 3: break
-        print(f"pivote fila: {pivote_row}, pivote columna: {pivote_col}")
         if pivote_col is not None:
             variable_standard.append(name_variable[pivote_col])
         if (pivote_col == None and pivote_row == None):
             break
         matriz_nueva = pivotear(matrix, pivote_row, pivote_col)
-        print("Matriz despues de pivotear:")
-        for e in matriz_nueva:
-            print(e)
+        
         matrix = matriz_nueva
+        matriz_historica.append(copy.deepcopy(matrix))
+ 
     if isMin:
         matrix,igualidades = convert_min_to_max(matrix,igualidades)
-    return matrix,name_variable,variable_standard,igualidades
+        matriz_historica.append(copy.deepcopy(matrix))
+
+    return matriz_historica,name_variable,variable_standard
 
 def SimplexMethodTwoFases(matrix,name_variable,variable_standard,isMin):
     valor = 0
-    for e in matrix:
-        print(e)
+
     while True:
         valor += 1 
         pivote_row, pivote_col = encontrar_pivote(matrix,isMin)
         if valor == 10: break
-        print(f"pivote fila: {pivote_row}, pivote columna: {pivote_col}")
         if pivote_col is not None:
             variable_standard.append(name_variable[pivote_col])
         if (pivote_col == None and pivote_row == None):
             break
         matriz_nueva = pivotear(matrix, pivote_row, pivote_col)
-        print("Matriz despues de pivotear:")
-        for e in matriz_nueva:
-            print(e)
+
         matrix = matriz_nueva
     
     return matrix,name_variable,variable_standard
@@ -75,11 +71,9 @@ def encontrar_pivote(matrix,is_min):
     # determinar si es minimizacion o maximizacion para encontrar el mayor negativo o mayor positivo
     if is_min:
         min_var = max(matrix[0][1:-1])
-        print(f"Valor maximo en fila 0: {min_var}")
         if min_var <= 0:
             return None, None
     else:
-        print(f"Valor minimo en fila 0: {min_var}")
         min_var = min(matrix[0][1:-1])
         if min_var >= 0:
             return None, None
@@ -94,8 +88,6 @@ def encontrar_pivote(matrix,is_min):
             ratio = matrix[j][val_solucion] / matrix[j][pivot_col]
             if ratio < old_ratio or pivot_row == 0:
                 old_ratio = ratio
-                print(f"Nuevo pivote fila: {j} con ratio {ratio}")
-                print(f"Old ratio: {old_ratio}")
                 pivot_row = j
 
     return pivot_row, pivot_col
@@ -183,7 +175,7 @@ variable_standard = ['Z']
 
 name_variable = ["Z","X1","X2"]
 
-#mat = SimplexMethod(matrix,name_variable,igualidades,variable_standard,isMin=False)
+
 
 """for i in range(len(variable_standard)):
     print(f"{variable_standard[i]} = {matrix[i][-1]}")"""
