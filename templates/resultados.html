@@ -12,8 +12,27 @@
 
     
 
-    <div class="bg-white p-10 rounded-2xl shadow-lg w-[90%] max-w-225">
-        
+    <div class="bg-white p-10 rounded-2xl shadow-lg w-[90%] max-w-225 gap-2">
+        {%for listaf in matrix%}
+            <table class="border-collapse border-2 border-black">
+                <tbody>
+                    {% for variable_names in var_names%}
+                        
+                            <td class="border-2 border-black px-4 py-2 text-center font-medium">
+                                {{variable_names}}
+                            </td>
+                        
+                    {%endfor%}
+                    {% for row in listaf %}
+                        <tr class="">
+                            {% for cell in row %}
+                                <td class="border-2 border-black px-4 py-2 text-center font-medium">{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {%endfor%}
     </div>
     <script src="{{ url_for('static', filename='javascript/validDatos.js') }}"></script>
 

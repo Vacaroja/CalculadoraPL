@@ -1,4 +1,5 @@
 from data.funciones.Ordenador import ordenador
+from data.metodos.simplex.SimplexMethod import SimplexMethod
 from flask import Flask, render_template, request, redirect, url_for, session,jsonify
 
 
@@ -28,25 +29,24 @@ def restricciones():
 def resultados():
     metodo = request.form.get('metodo')
     cantVar = request.form.get('CantVar')
+    historico_matriz = []
     datos_variables = {}
+    igualidades = ["=","<=", "<=", "<="]
+
+    variable_standard = ['Z']
+
+    name_variable = ["Z","X1","X2"]
     for key in request.form.keys():
         if key.startswith('x'):
             # getlist extrae todos los inputs con el mismo nombre (las filas añadidas)
             datos_variables[key] = request.form.getlist(key)    
     # También capturamos los resultados (lo que está después del =)
     resultados = request.form.getlist('res[]')
-    datos_variables['res'] = request.form.getlist('res[]') 
+    datos_variables['res[]'] = request.form.getlist('res[]')
     listaf = ordenador(datos_variables)
-    for e in listaf:
-        print(e)
-    
-
-    print(f"Variables capturadas: {datos_variables}")
-    print(f"Resultados (Sol): {resultados}")
-
-    print("Datos recibidos correctamente")
-    
-    return render_template('resultados.html')
+    matrix,var_names,variable_standard = SimplexMethod(listaf,name_variable,igualidades,variable_standard,isMin=False)
+    name_variable.append("SOL")
+    return render_template('resultados.html',matrix=matrix,var_names=var_names)
 
     
 
