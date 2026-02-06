@@ -12,7 +12,14 @@
 
     
 
-    <div class="bg-white p-10 rounded-2xl shadow-lg w-[90%] max-w-405">
+    <div class="relative bg-white p-10 rounded-2xl shadow-lg w-[90%] max-w-405">
+        <a href="{{ url_for('index') }}" 
+       class="absolute top-5 left-5 inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center shadow-md transform active:scale-95 transition-all">
+        <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0l4 4M1 5l4-4"/>
+        </svg>
+        Volver al Inicio
+    </a>
     <h2 class="text-center text-2xl font-bold mb-8 pt-8 text-indigo-500">
         Funcion objetivo
     </h2>
@@ -22,7 +29,7 @@
         <input type="hidden" name="cantVar" value="{{ cantVar }}">
 
         <div class="flex items-center gap-2 bg-slate-50 p-4 rounded-lg overflow-x-auto border border-slate-100 shadow-inner">
-            
+            <span class="font-bold text-indigo-500 mx-2">Z =</span>
             {% for i in range(cantVar) %}
                 <div class="flex items-center gap-2 shrink-0">
                     <input type="number" name="x{{ i+1 }}[]" step="any" placeholder="X{{ i+1 }}" required
@@ -33,41 +40,12 @@
                     {% endif %}
                 </div>
             {% endfor %}
-
-            <span class="font-bold text-indigo-500 mx-2">=</span>
-            <input type="number" name="res[]" value="1" step="any" placeholder="Z" required 
-                class="w-24 shrink-0 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
-            Z
-        </div>
-
-        <h2 class="text-center text-2xl font-bold mb-8 pt-8 text-indigo-500">
-            Restricciones
-        </h2>
-
-        <button type="button" onclick="addRestrictionRow()" class="block w-full mt-6 p-4 bg-green-600 hover:bg-green-700 text-white rounded-lg text-bl text-base font-semibold transition-colors duration-300 shadow-md">
-            Aggregar Restricción
-        </button>
-
-        <div id="contenedor-restricciones" class="mt-6 flex flex-col gap-4">
-            <div class="flex items-center gap-2 bg-slate-50 p-4 rounded-lg overflow-x-auto border border-slate-100 shadow-inner fila-restriccion">
             
-                {% for i in range(cantVar) %}
-                    <div class="flex items-center gap-2 shrink-0">
-                        <input type="number" name="x{{ i+1 }}[]" step="any" placeholder="X{{ i+1 }}" required
-                            class="w-24 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
-                        X{{ i+1 }}
-                        {% if i < cantVar - 1 %}
-                            <span class="font-bold text-indigo-500">+</span>
-                        {% endif %}
-                    </div>
-                {% endfor %}
 
-                <span class="font-bold text-indigo-500 mx-2">=</span>
-                <input type="number" name="res[]" step="any" placeholder="Sol" required 
-                    class="w-24 shrink-0 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
-            </div>
+            
+            
+            
         </div>
-
         <h2 class="text-center text-2xl font-bold mb-8 pt-8 text-indigo-500">
         TIPO DE OPTIMIZACION
         </h2>
@@ -92,7 +70,40 @@
 
                 
 
+        </div>
+        <h2 class="text-center text-2xl font-bold mb-8 pt-8 text-indigo-500">
+            Restricciones
+        </h2>
+
+        <button type="button" onclick="addRestrictionRow()" class="block w-full mt-6 p-4 bg-green-600 hover:bg-green-700 text-white rounded-lg text-bl text-base font-semibold transition-colors duration-300 shadow-md">
+            Agregar Restricción
+        </button>
+
+        <div id="contenedor-restricciones" class="mt-6 flex flex-col gap-4">
+            <div class="flex items-center gap-2 bg-slate-50 p-4 rounded-lg overflow-x-auto border border-slate-100 shadow-inner fila-restriccion">
+            
+                {% for i in range(cantVar) %}
+                    <div class="flex items-center gap-2 shrink-0">
+                        <input type="number" name="x{{ i+1 }}[]" step="any" placeholder="X{{ i+1 }}" required
+                            class="w-24 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                        X{{ i+1 }}
+                        {% if i < cantVar - 1 %}
+                            <span class="font-bold text-indigo-500">+</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <select name="igualdades[]" class="w-20 font-bold text-black text-lg mx-2 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-200 cursor-pointer text-center appearance-none">
+                    <option value=">="> ≥ </option>
+                    <option value="<="> ≤ </option>
+                    <option value="=">=</option>
+                </select>
+                <input type="number" name="res[]" step="any" placeholder="Sol" required 
+                    class="w-24 shrink-0 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
             </div>
+        </div>
+
+        
 
         <button type="submit" class="block w-full mt-6 p-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-base font-semibold transition-colors duration-300 shadow-md">
             ENVIAR DATOS

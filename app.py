@@ -2,6 +2,8 @@ from data.funciones.Ordenador import ordenador
 from data.metodos.simplex.SimplexMethod import SimplexMethod
 from flask import Flask, render_template, request, redirect, url_for, session,jsonify
 
+#hacer funcion que use CantVar para agregar los X[] en name_variable
+
 
 app = Flask(__name__)
 #secret key para la sesion y el guardado de la informacion
@@ -29,12 +31,12 @@ def restricciones():
 def resultados():
     metodo = request.form.get('metodo')
     cantVar = request.form.get('CantVar')
-    historico_matriz = []
+    igualdad = request.form.getlist('igualdades[]')
+    igualdad.insert(0,'=')
     datos_variables = {}
-    igualidades = ["=","<=", "<=", "<="]
 
     variable_standard = ['Z']
-
+    #hacer funcion que use CantVar para agregar los X[] en name_variable
     name_variable = ["Z","X1","X2"]
     for key in request.form.keys():
         if key.startswith('x'):
@@ -42,9 +44,10 @@ def resultados():
             datos_variables[key] = request.form.getlist(key)    
     # También capturamos los resultados (lo que está después del =)
     resultados = request.form.getlist('res[]')
+    
     datos_variables['res[]'] = request.form.getlist('res[]')
     listaf = ordenador(datos_variables)
-    matrix,var_names,variable_standard = SimplexMethod(listaf,name_variable,igualidades,variable_standard,isMin=False)
+    matrix,var_names,variable_standard = SimplexMethod(listaf,name_variable,igualdad,variable_standard,isMin=False)
     name_variable.append("SOL")
     
     return render_template('resultados.html',matrix=matrix,var_names=var_names,variable_standard=variable_standard)
