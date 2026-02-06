@@ -13,6 +13,7 @@
     
 
     <div class="bg-white p-10 rounded-2xl shadow-lg w-[90%] max-w-225 gap-2">
+        <H2>HISTORIAL DE MATRICES</H2>
         {%for listaf in matrix%}
             <table class="border-collapse border-2 border-black">
                 <tbody>
@@ -33,6 +34,23 @@
                 </tbody>
             </table>
         {%endfor%}
+    </div>
+    <div>
+        <h2>La solucion es:</h2>
+        <h3>Resultado:</h3>
+        {%for standar in variable_standard%}
+            <table class="border-collapse border-2 border-black">
+                <tbody>
+                        
+                            <td class="border-2 border-black px-4 py-2 text-center font-medium">
+                                {{standar}}
+                            </td>
+                        
+                        
+        {% endfor %}
+                </tbody>
+            </table>
+
     </div>
     <script src="{{ url_for('static', filename='javascript/validDatos.js') }}"></script>
 

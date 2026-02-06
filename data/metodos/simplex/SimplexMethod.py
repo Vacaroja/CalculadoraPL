@@ -14,7 +14,10 @@ def SimplexMethod(old_matrix,old_name_variable,igualidades,variable_standard,isM
     while True:
         pivote_row, pivote_col = encontrar_pivote(matrix,isMin)
         if pivote_col is not None:
-            variable_standard.append(name_variable[pivote_col])
+            try:
+                variable_standard[pivote_row] = name_variable[pivote_col]
+            except Exception:
+                variable_standard.append(name_variable[pivote_col])
         if (pivote_col == None and pivote_row == None):
             break
         matriz_nueva = pivotear(matrix, pivote_row, pivote_col)

@@ -46,7 +46,8 @@ def resultados():
     listaf = ordenador(datos_variables)
     matrix,var_names,variable_standard = SimplexMethod(listaf,name_variable,igualidades,variable_standard,isMin=False)
     name_variable.append("SOL")
-    return render_template('resultados.html',matrix=matrix,var_names=var_names)
+    
+    return render_template('resultados.html',matrix=matrix,var_names=var_names,variable_standard=variable_standard)
 
     
 
