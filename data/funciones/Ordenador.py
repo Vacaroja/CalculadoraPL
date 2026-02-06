@@ -1,9 +1,10 @@
 def ordenador(diccionario):
     lista_inicial = [list(map(float, v)) for k, v in diccionario.items() if '[]' in k]
-    
+    lista_inicial[-1].insert(0,-1)
     lista_traspuesta = list(zip(*lista_inicial))
     columnas_revertidas = [list(c)[::-1] for c in lista_traspuesta]
     columnas_revertidas = add_zeros(columnas_revertidas)
+    columnas_revertidas[0] = [x * -1 for x in columnas_revertidas[0]]
     return columnas_revertidas
 
 def add_zeros(matrix):
