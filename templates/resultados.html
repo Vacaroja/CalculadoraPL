@@ -13,43 +13,75 @@
     
 
     <div class="bg-white p-10 rounded-2xl shadow-lg w-[90%] max-w-225 gap-2">
-        <H2>HISTORIAL DE MATRICES</H2>
-        {%for listaf in matrix%}
-            <table class="border-collapse border-2 border-black">
-                <tbody>
-                    {% for variable_names in var_names%}
-                        
-                            <td class="border-2 border-black px-4 py-2 text-center font-medium">
-                                {{variable_names}}
-                            </td>
-                        
-                    {%endfor%}
-                    {% for row in listaf %}
-                        <tr class="">
-                            {% for cell in row %}
-                                <td class="border-2 border-black px-4 py-2 text-center font-medium">{{ cell }}</td>
+            <div class="mt-10 p-6 bg-indigo-50 rounded-2xl border border-indigo-100">
+                <h2 class="text-xl font-bold text-indigo-900 mb-4 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    La solución es:
+                </h2>
+                
+                <h3 class="text-sm font-semibold text-indigo-400 uppercase tracking-widest mb-3 ml-1">Resultado Final</h3>
+
+                <div class="inline-block min-w-full align-middle">
+                    <div class="overflow-x-auto border border-indigo-200 rounded-xl bg-white shadow-sm">
+                        <table class="min-w-full divide-x divide-indigo-100">
+                            <tbody>
+                                <tr class="divide-x divide-indigo-100">
+                                    {% for standar in variable_standard %}
+                                        <td class="px-6 py-4 text-center">
+                                            <div class="text-xs font-bold text-indigo-500 uppercase mb-1">Var {{ loop.index }}</div>
+                                            <div class="text-lg font-extrabold text-slate-800">
+                                                {{ standar }}
+                                            </div>
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <h2 class="text-2xl font-extrabold text-slate-800 mb-6 flex items-center gap-2 pt-3">
+            <span class="bg-indigo-500 w-2 h-8 rounded-full"></span>
+                HISTORIAL DE MATRICES
+        </h2>
+
+        <div class="space-y-12 ">
+            {% for listaf in matrix %}
+            <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white">
+                <table class="w-full border-collapse text-left text-sm">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            {% for variable_names in var_names %}
+                            <th class="px-6 py-4 font-bold text-slate-700 uppercase tracking-wider border-b border-slate-200 text-center">
+                                {{ variable_names }}
+                            </th>
                             {% endfor %}
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {%endfor%}
-    </div>
-    <div>
-        <h2>La solucion es:</h2>
-        <h3>Resultado:</h3>
-        {%for standar in variable_standard%}
-            <table class="border-collapse border-2 border-black">
-                <tbody>
-                        
-                            <td class="border-2 border-black px-4 py-2 text-center font-medium">
-                                {{standar}}
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {% for row in listaf %}
+                        <tr class="hover:bg-indigo-50/50 transition-colors">
+                            {% for cell in row %}
+                            <td class="px-6 py-4 text-slate-600 text-center font-medium">
+                                <span class="{% if cell == 0 or cell == '0' %}text-slate-300 font-normal{% endif %}">
+                                    {{ cell }}
+                                </span>
                             </td>
-                        
-                        
-        {% endfor %}
-                </tbody>
-            </table>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+    
+    <div>
+        
 
     </div>
     <script src="{{ url_for('static', filename='javascript/validDatos.js') }}"></script>
