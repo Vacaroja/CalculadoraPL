@@ -1,5 +1,7 @@
 from data.funciones.Ordenador import ordenador
+from data.funciones.valid_method import valid_method
 from data.metodos.simplex.SimplexMethod import SimplexMethod
+from data.metodos.simplex.TwoFases import Twofases
 from flask import Flask, render_template, request, redirect, url_for, session,jsonify
 
 #hacer funcion que use CantVar para agregar los X[] en name_variable
@@ -19,8 +21,7 @@ def index():
 def restricciones():
     metodo = request.form.get('metodo')
     cantVar = request.form.get('CantVar')
-    print(cantVar)
-    print(metodo)
+    
     try:
         cantVar = int(request.form.get('CantVar'))
     except:
@@ -30,7 +31,9 @@ def restricciones():
 @app.route('/resultados', methods=['POST'])
 def resultados():
     metodo = request.form.get('metodo')
+    min_max = request.form.get('min_max')
     cantVar = request.form.get('CantVar')
+    print(min_max)
     igualdad = request.form.getlist('igualdades[]')
     igualdad.insert(0,'=')
     datos_variables = {}
@@ -47,10 +50,22 @@ def resultados():
     
     datos_variables['res[]'] = request.form.getlist('res[]')
     listaf = ordenador(datos_variables)
-    matrix,var_names,variable_standard = SimplexMethod(listaf,name_variable,igualdad,variable_standard,isMin=False)
-    name_variable.append("SOL")
     
-    return render_template('resultados.html',matrix=matrix,var_names=var_names,variable_standard=variable_standard)
+    match(metodo):
+        case "simplex":
+            matrix,var_names,variable_standard = SimplexMethod(listaf,name_variable,igualdad,variable_standard,valid_method(min_max))
+            name_variable.append("SOL")
+            return render_template('resultados.html',matrix=matrix,var_names=var_names,variable_standard=variable_standard)
+        case "dos-pasos":
+            matrix,var_names,variable_standard = Twofases(listaf,name_variable,igualdad,variable_standard,valid_method(min_max))
+            name_variable.append("SOL")
+            return render_template('resultados.html',matrix=matrix,var_names=var_names,variable_standard=variable_standard)
+        case _:
+            matrix,var_names,variable_standard = SimplexMethod(listaf,name_variable,igualdad,variable_standard,valid_method(min_max))
+            name_variable.append("SOL")
+            return render_template('resultados.html',matrix=matrix,var_names=var_names,variable_standard=variable_standard)
+            
+    
 
     
 
