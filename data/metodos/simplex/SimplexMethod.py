@@ -1,14 +1,15 @@
 import copy
 
 
-def SimplexMethod(old_matrix,old_name_variable,igualidades,variable_standard,isMin):
+def SimplexMethod(old_matrix,name_variable,igualidades,variable_standard,isMin):
     matriz_historica = []
-    
     if isMin:
-        matrix,igualidades = convert_min_to_max(old_matrix,igualidades)
+        matrix = convert_min_to_max(old_matrix)
     else:
         matrix = old_matrix.copy()
-    matrix,name_variable = add_holgura_or_artifical_val(matrix,igualidades,old_name_variable)
+    matrix,holgura_and_artificial = add_holgura_or_artifical_val(matrix,igualidades)
+    variable_standard.extend(holgura_and_artificial)
+    name_variable.extend(holgura_and_artificial)
     matriz_historica.append(copy.deepcopy(matrix))
     
     while True:
@@ -26,7 +27,7 @@ def SimplexMethod(old_matrix,old_name_variable,igualidades,variable_standard,isM
         matriz_historica.append(copy.deepcopy(matrix))
  
     if isMin:
-        matrix,igualidades = convert_min_to_max(matrix,igualidades)
+        matrix = convert_min_to_max(matrix)
         matriz_historica.append(copy.deepcopy(matrix))
 
     return matriz_historica,name_variable,variable_standard
@@ -48,10 +49,9 @@ def SimplexMethodTwoFases(matrix,name_variable,variable_standard,isMin):
     
     return matrix,name_variable,variable_standard
 
-def convert_min_to_max(matrix,igualidades):
-    equal = convert_equalities(igualidades)
+def convert_min_to_max(matrix):
     matrix[0] = [-1 * x for x in matrix[0]]
-    return matrix,equal
+    return matrix
 
 def convert_equalities(igualidades):
     new_igualidades = []
@@ -112,9 +112,10 @@ def pivotear(matrix, pivot_row, pivot_col):
     return matrix
 
 
-def add_holgura_or_artifical_val(matrix, igualdades,var_names):
+def add_holgura_or_artifical_val(matrix, igualdades):
     num_rows = len(matrix)
     valor = 0
+    var_names = []
     
 
     for i in range(num_rows):
