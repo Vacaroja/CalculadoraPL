@@ -1,22 +1,27 @@
-from SimplexMethod import SimplexMethod, SimplexMethodTwoFases, add_holgura_or_artifical_val
-
+from SimplexMethod import SimplexMethod,SimplexMethodTwoFases,add_holgura_or_artifical_val
 
 def Twofases(old_matrix,old_name_variable,igualidades,old_variable_standard,isMin):
-    
-    matrix,name_variable = add_holgura_or_artifical_val(old_matrix,igualidades,old_name_variable)
-
+    name_variable = old_name_variable
+    #primero se normaliza la funcion colocando las variables de holgura y artificiales
+    #esta funcion devuelve las variables de holgura y artificiales
+    matrix,var_names = add_holgura_or_artifical_val(old_matrix,igualidades)
+    #coloca las variables S y R junto con las demas
+    name_variable.extend(var_names)
+    #este coloca unicamente las R y S necesarias para la parte inicial de la primera fase
+    old_variable_standard.extend(put_inicial_standard(len(matrix),var_names))
+    #luego reemplaza la primera columna con el r=R+R
     matrix_first_fase = add_artifical_row(matrix,name_variable)
-
+    #funcion para multiplicar la funcion principal para estandarizar las "R"
     matrix_first_fase = definir_fila_artificial(matrix_first_fase,name_variable)
-
+    
     matrix,name_variable,variable_standard = SimplexMethodTwoFases(matrix_first_fase,name_variable,old_variable_standard,isMin=True)
     print("Resultado Primera fase:")
     for e in matrix:
         print(e)
     print(name_variable)
     print(variable_standard)
-    matrix,name_variable = delete_artificial_vars(matrix,name_variable)
-    matrix,name_variable,variable_standard,igualidades = SimplexMethod(matrix,name_variable,igualidades,variable_standard,isMin=isMin)
+    matrix_secondfase,name_variable = delete_artificial_vars(matrix,name_variable)
+    matrix_secondfase,name_variable,variable_standard = SimplexMethodTwoFases(matrix_secondfase,name_variable,variable_standard,isMin=isMin)
     print("Resultado Final:")
     for e in matrix:
         print(e)
@@ -24,6 +29,18 @@ def Twofases(old_matrix,old_name_variable,igualidades,old_variable_standard,isMi
     print(variable_standard)
     return matrix,name_variable,variable_standard
 
+#funcion que devuelve la lista de variables iniciales para la primera fase
+def put_inicial_standard(max_standard,variable_names):
+    #primero las ordena y las junta R con R y S con S
+    arregladas = sorted(variable_names)
+    #crea una lista vacia para guardar las variables
+    lista_extendida = []
+    #itera con el maximo necesario -1 debido a la Z
+    for e in range(max_standard-1):
+        lista_extendida.append(arregladas[e])
+    return lista_extendida
+
+#funcion para multiplicar la funcion principal para estandarizar las "R"
 def definir_fila_artificial(matrix,name_variable):
     fila_artificial = 0
     total_matrix = len(matrix[0])
@@ -43,16 +60,18 @@ def definir_fila_artificial(matrix,name_variable):
 
 def delete_artificial_vars(matrix,name_variable):
     indices_a_borrar = []
+    last_matrix = [row[:] for row in matrix[-1]]
     for i in range(len(name_variable)):
         if "R" in name_variable[i]:
             indices_a_borrar.append(i)
     
     for index in sorted(indices_a_borrar,reverse=True):
-        for row in matrix:
+        for row in last_matrix:
+            print(row)
             del row[index]
         del name_variable[index]
     
-    return matrix,name_variable
+    return last_matrix,name_variable
 
 def add_artifical_row(old_matrix,var_names):
     matrix = old_matrix.copy()

@@ -32,22 +32,27 @@ def SimplexMethod(old_matrix,name_variable,igualidades,variable_standard,isMin):
 
     return matriz_historica,name_variable,variable_standard
 
-def SimplexMethodTwoFases(matrix,name_variable,variable_standard,isMin):
-    valor = 0
-
+def SimplexMethodTwoFases(old_matrix,name_variable,variable_standard,isMin):
+    matriz_historica = []
+    
+    matrix = old_matrix.copy()
+    matriz_historica.append(copy.deepcopy(matrix))
+    
     while True:
-        valor += 1 
         pivote_row, pivote_col = encontrar_pivote(matrix,isMin)
-        if valor == 10: break
         if pivote_col is not None:
-            variable_standard.append(name_variable[pivote_col])
+            try:
+                variable_standard[pivote_row] = name_variable[pivote_col]
+            except Exception:
+                variable_standard.append(name_variable[pivote_col])
         if (pivote_col == None and pivote_row == None):
             break
         matriz_nueva = pivotear(matrix, pivote_row, pivote_col)
-
+        
         matrix = matriz_nueva
-    
-    return matrix,name_variable,variable_standard
+        matriz_historica.append(copy.deepcopy(matrix))
+ 
+    return matriz_historica,name_variable,variable_standard
 
 def convert_min_to_max(matrix):
     matrix[0] = [-1 * x for x in matrix[0]]
