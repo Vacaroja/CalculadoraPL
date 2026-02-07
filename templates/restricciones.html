@@ -94,8 +94,8 @@
                 {% endfor %}
 
                 <select name="igualdades[]" class="w-20 font-bold text-black text-lg mx-2 p-2 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-200 cursor-pointer text-center appearance-none">
-                    <option value=">="> ≥ </option>
                     <option value="<="> ≤ </option>
+                    <option value=">="> ≥ </option>
                     <option value="=">=</option>
                 </select>
                 <input type="number" name="res[]" step="any" placeholder="Sol" required 
@@ -112,6 +112,7 @@
 </div>
 
 <script src="{{ url_for('static', filename='javascript/add_rows_restrictions.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/check_simplex_use.js') }}"></script>
 </body>
 </html>
 
