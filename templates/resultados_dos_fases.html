@@ -80,7 +80,7 @@
                             {% for cell in row %}
                             <td class="px-6 py-4 text-slate-600 text-center font-medium">
                                 <span class="{% if cell == 0 or cell == '0' %}text-slate-300 font-normal{% endif %}">
-                                    {{ cell }}
+                                    {{ "%.2f"|format(cell) if cell is number else cell }}
                                 </span>
                             </td>
                             {% endfor %}
@@ -101,7 +101,7 @@
                 <table class="w-full border-collapse text-left text-sm">
                     <thead class="bg-slate-50">
                         <tr>
-                            {% for variable_names in var_names %}
+                            {% for variable_names in var_second %}
                             <th class="px-6 py-4 font-bold text-slate-700 uppercase tracking-wider border-b border-slate-200 text-center">
                                 {{ variable_names }}
                             </th>

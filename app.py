@@ -64,7 +64,7 @@ def resultados():
                 variable_standard,
                 valid_method(min_max),
             )
-            name_variable.append("SOL")
+            var_names.append("SOL")
             soluciones = get_last_result(matrix=matrix)
             return render_template(
                 "resultados_simplex.html",
@@ -76,7 +76,7 @@ def resultados():
                 
             )
         case "dos-pasos":
-            matrix_fase1, matrix_fase2, var_names, variable_standard = Twofases(
+            matrix_fase1, matrix_fase2, var_names,name_variable_second_fase,variable_standard = Twofases(
                 listaf,
                 name_variable,
                 igualdad,
@@ -84,16 +84,18 @@ def resultados():
                 valid_method(min_max),
                 
             )
-            name_variable.append("SOL")
+            var_names.append("SOL")
+            name_variable_second_fase.append("SOL")
             soluciones = get_last_result(matrix=matrix_fase2)
             return render_template(
                 "resultados_dos_fases.html",
-                matrix=matrix_fase1,
-                matrix_secondfase=matrix_fase2,
-                var_names=var_names,
-                variable_standard=variable_standard,
-                soluciones=soluciones,
-                min_max=min_max
+                matrix=matrix_fase1,#matriz de la primera fase(historico)
+                matrix_secondfase=matrix_fase2,#matriz de la segunda fase(historico)
+                var_names=var_names,#variables de la primera fase(con R)
+                var_second = name_variable_second_fase,#variables de la segunda fase
+                variable_standard=variable_standard,#variables estandar para el resultado final
+                soluciones=soluciones,#valores de las soluciones para resultado final
+                min_max=min_max#variable para saber si es minimizacion o maximizacion
             )
         case _:
             print("por aqui no")
