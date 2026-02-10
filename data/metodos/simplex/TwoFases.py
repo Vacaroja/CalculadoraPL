@@ -1,6 +1,7 @@
 from data.metodos.simplex.SimplexMethod import SimplexMethod,SimplexMethodTwoFases,add_holgura_or_artifical_val
 
 def Twofases(old_matrix,old_name_variable,igualidades,old_variable_standard,isMin):
+    solucion = '' 
     name_variable = old_name_variable
     name_variable_Second_fase = []
     #primero se normaliza la funcion colocando las variables de holgura y artificiales
@@ -15,21 +16,16 @@ def Twofases(old_matrix,old_name_variable,igualidades,old_variable_standard,isMi
     #funcion para multiplicar la funcion principal para estandarizar las "R"
     matrix_first_fase = definir_fila_artificial(matrix_first_fase,name_variable)
     
-    matrix,name_variable,variable_standard = SimplexMethodTwoFases(matrix_first_fase,name_variable,old_variable_standard,isMin=True)
+    matrix,name_variable,variable_standard,solucion = SimplexMethodTwoFases(matrix_first_fase,name_variable,old_variable_standard,isMin=True)
+    if solucion == 'no acotada' or solucion == 'No Factible':
+        return matrix,matrix,name_variable,name_variable,old_variable_standard,solucion
     name_variable_Second_fase.extend(name_variable)
-    print(name_variable)
-    print(name_variable_Second_fase)
+
     matrix_secondfase,name_variable_Second_fase = delete_artificial_vars(matrix,name_variable_Second_fase,fila_borrada)
-    print(name_variable)
-    print(name_variable_Second_fase)
-    matrix_secondfase,name_variable_Second_fase,variable_standard = SimplexMethodTwoFases(matrix_secondfase,name_variable_Second_fase,variable_standard,isMin=isMin)
-    print("Resultado Final:")
-    for e in matrix_secondfase:
-        for i in e:
-            print(i)
-    print(name_variable_Second_fase)
-    print(name_variable_Second_fase)
-    return matrix,matrix_secondfase,name_variable,name_variable_Second_fase,variable_standard
+
+    matrix_secondfase,name_variable_Second_fase,variable_standard,solucion = SimplexMethodTwoFases(matrix_secondfase,name_variable_Second_fase,variable_standard,isMin=isMin)
+
+    return matrix,matrix_secondfase,name_variable,name_variable_Second_fase,variable_standard,solucion
 
 #funcion que devuelve la lista de variables iniciales para la primera fase
 def put_inicial_standard(max_standard,variable_names):

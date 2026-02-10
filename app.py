@@ -57,7 +57,7 @@ def resultados():
     print(metodo)
     match (metodo):
         case "simplex":
-            matrix, var_names, variable_standard = SimplexMethod(
+            matrix, var_names, variable_standard,tipo_solucion = SimplexMethod(
                 listaf,
                 name_variable,
                 igualdad,
@@ -72,11 +72,12 @@ def resultados():
                 var_names=var_names,
                 variable_standard=variable_standard,
                 soluciones=soluciones,
-                min_max=min_max
+                min_max=min_max,
+                tipo_solucion = tipo_solucion
                 
             )
         case "dos-pasos":
-            matrix_fase1, matrix_fase2, var_names,name_variable_second_fase,variable_standard = Twofases(
+            matrix_fase1, matrix_fase2, var_names,name_variable_second_fase,variable_standard,solucion = Twofases(
                 listaf,
                 name_variable,
                 igualdad,
@@ -95,7 +96,8 @@ def resultados():
                 var_second = name_variable_second_fase,#variables de la segunda fase
                 variable_standard=variable_standard,#variables estandar para el resultado final
                 soluciones=soluciones,#valores de las soluciones para resultado final
-                min_max=min_max#variable para saber si es minimizacion o maximizacion
+                min_max=min_max,#variable para saber si es minimizacion o maximizacion
+                solucion = solucion
             )
         case _:
             print("por aqui no")

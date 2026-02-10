@@ -1,8 +1,14 @@
 import copy
+from data.funciones.solutions.find_solution_result import find_solution_result
+from data.funciones.solutions.no_acotada import no_acotada 
 
 
 def SimplexMethod(old_matrix,name_variable,igualidades,variable_standard,isMin):
+    #inicializaciones
     matriz_historica = []
+    solucion = '' #la solucion por defecto es optima unica
+    acotada = False #variable para determinar si la solucion es acotada o no, se inicializa en False y se cambia a True si se encuentra que no es acotada
+    
     if isMin:
         matrix = convert_min_to_max(old_matrix)
     else:
@@ -13,49 +19,54 @@ def SimplexMethod(old_matrix,name_variable,igualidades,variable_standard,isMin):
     matriz_historica.append(copy.deepcopy(matrix))
     
     while True:
-        pivote_row, pivote_col = encontrar_pivote(matrix,isMin)
+        pivote_row, pivote_col,acotada = encontrar_pivote(matrix,isMin)
         if pivote_col is not None:
             try:
                 variable_standard[pivote_row] = name_variable[pivote_col]
             except Exception:
                 variable_standard.append(name_variable[pivote_col])
         if (pivote_col == None and pivote_row == None):
+            if acotada:
+                solucion = 'no acotada'
             break
         matriz_nueva = pivotear(matrix, pivote_row, pivote_col)
         
         matrix = matriz_nueva
         matriz_historica.append(copy.deepcopy(matrix))
- 
-    if isMin:
-        matrix = convert_min_to_max(matrix)
-        matriz_historica.append(copy.deepcopy(matrix))
-
-    return matriz_historica,name_variable,variable_standard
+    if not acotada:
+        solucion = find_solution_result(matriz_historica[-1],pivote_col,variable_standard,name_variable)
+        
+    return matriz_historica,name_variable,variable_standard,solucion
 
 def SimplexMethodTwoFases(old_matrix,name_variable,variable_standard,isMin):
     matriz_historica = []
-    
+    solucion = '' #la solucion por defecto es optima unica
+    acotada = False #variable para determinar si la solucion es acotada o no, se inicializa en False y se cambia a True si se encuentra que no es acotada
+
     matrix = old_matrix.copy()
     matriz_historica.append(copy.deepcopy(matrix))
     
     while True:
-        pivote_row, pivote_col = encontrar_pivote(matrix,isMin)
+        pivote_row, pivote_col,acotada = encontrar_pivote(matrix,isMin)
         if pivote_col is not None:
             try:
                 variable_standard[pivote_row] = name_variable[pivote_col]
             except Exception:
                 variable_standard.append(name_variable[pivote_col])
         if (pivote_col == None and pivote_row == None):
+            if acotada:
+                solucion = 'no acotada'
             break
         matriz_nueva = pivotear(matrix, pivote_row, pivote_col)
         
         matrix = matriz_nueva
         matriz_historica.append(copy.deepcopy(matrix))
- 
-    return matriz_historica,name_variable,variable_standard
+    if not acotada:
+        solucion = find_solution_result(matriz_historica[-1],pivote_col,variable_standard,name_variable)
+    return matriz_historica,name_variable,variable_standard,solucion
 
 def convert_min_to_max(matrix):
-    matrix[0] = [-1 * x for x in matrix[0]]
+    matrix[0] = [matrix[0][0]] + [-1 * x for x in matrix[0][1:-1]] + [matrix[0][-1]]
     return matrix
 
 def convert_equalities(igualidades):
@@ -76,20 +87,23 @@ def encontrar_pivote(matrix,is_min):
     pivot_row = 0
     old_ratio = 0
     val_solucion = len(matrix[0]) - 1
+    fila_z_interes = matrix[0][1:val_solucion]
     # determinar si es minimizacion o maximizacion para encontrar el mayor negativo o mayor positivo
     if is_min:
         min_var = max(matrix[0][1:-1])
         if min_var <= 0:
-            return None, None
+            return None, None, False
     else:
         min_var = min(matrix[0][1:-1])
         if min_var >= 0:
-            return None, None
+            return None, None, False
         
 
     
 
-    pivot_col = matrix[0].index(min_var)
+    pivot_col = fila_z_interes.index(min_var)+1
+    if no_acotada(matrix,pivot_col):
+        return None, None, True
 
     for j in range(1,len(matrix)):
         if matrix[j][pivot_col] > 0:
@@ -98,7 +112,7 @@ def encontrar_pivote(matrix,is_min):
                 old_ratio = ratio
                 pivot_row = j
 
-    return pivot_row, pivot_col
+    return pivot_row, pivot_col,False
 
 
 # crea nueva matriz pivoteada
