@@ -2,6 +2,7 @@ from data.funciones.Ordenador import ordenador
 from data.funciones.get_last_solutions import get_last_result
 from data.funciones.valid_method import valid_method
 from data.metodos.simplex.SimplexMethod import SimplexMethod
+from data.metodos.grafico.GraphicMethod import metodo_grafico
 from data.metodos.simplex.TwoFases import Twofases
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 
@@ -99,19 +100,22 @@ def resultados():
                 min_max=min_max,#variable para saber si es minimizacion o maximizacion
                 solucion = solucion
             )
-        case _:
+        case 'grafico':
             print("por aqui no")
-            matrix, var_names, variable_standard = SimplexMethod(
+            is_min = valid_method(min_max)
+            matrix, var_names, variable_standard,solucion = SimplexMethod(
                 listaf,
                 name_variable,
                 igualdad,
                 variable_standard,
-                valid_method(min_max),
+                is_min,
             )
+            json_matrix = metodo_grafico(matrix,is_min,igualdad)
             name_variable.append("SOL")
             return render_template(
-                "resultados.html",
-                matrix=matrix,
+                "resultados_grafico.html",
+                json_matrix=json_matrix,
+                solucion = solucion,
                 var_names=var_names,
                 variable_standard=variable_standard,
                 min_max=min_max

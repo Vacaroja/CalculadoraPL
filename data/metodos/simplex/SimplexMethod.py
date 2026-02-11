@@ -3,40 +3,12 @@ from data.funciones.solutions.find_solution_result import find_solution_result
 from data.funciones.solutions.no_acotada import no_acotada 
 
 
-def SimplexMethod(old_matrix,name_variable,igualidades,variable_standard,isMin):
-    #inicializaciones
-    matriz_historica = []
-    solucion = '' #la solucion por defecto es optima unica
-    acotada = False #variable para determinar si la solucion es acotada o no, se inicializa en False y se cambia a True si se encuentra que no es acotada
-    
-    if isMin:
-        matrix = convert_min_to_max(old_matrix)
-    else:
-        matrix = old_matrix.copy()
-    matrix,holgura_and_artificial = add_holgura_or_artifical_val(matrix,igualidades)
+def SimplexMethod(old_matrix,name_variable,igualidades,variable_standard,isMin):   
+    matrix = old_matrix.copy()
+    matrix,holgura_and_artificial = add_holgura_or_artifical_val(old_matrix,igualidades)
     variable_standard.extend(holgura_and_artificial)
     name_variable.extend(holgura_and_artificial)
-    matriz_historica.append(copy.deepcopy(matrix))
-    
-    while True:
-        pivote_row, pivote_col,acotada = encontrar_pivote(matrix,isMin)
-        if pivote_col is not None:
-            try:
-                variable_standard[pivote_row] = name_variable[pivote_col]
-            except Exception:
-                variable_standard.append(name_variable[pivote_col])
-        if (pivote_col == None and pivote_row == None):
-            if acotada:
-                solucion = 'no acotada'
-            break
-        matriz_nueva = pivotear(matrix, pivote_row, pivote_col)
-        
-        matrix = matriz_nueva
-        matriz_historica.append(copy.deepcopy(matrix))
-    if not acotada:
-        solucion = find_solution_result(matriz_historica[-1],pivote_col,variable_standard,name_variable)
-        
-    return matriz_historica,name_variable,variable_standard,solucion
+    return SimplexMethodTwoFases(matrix,name_variable,variable_standard,isMin)
 
 def SimplexMethodTwoFases(old_matrix,name_variable,variable_standard,isMin):
     matriz_historica = []

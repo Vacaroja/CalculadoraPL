@@ -1,2 +1,6 @@
 node_modules
 iniciar.txt
+venv
+.gitignore
+.gitignore
+*.py[cod]

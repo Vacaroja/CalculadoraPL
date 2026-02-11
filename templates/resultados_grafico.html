@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Calculadora de P.L</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+</head>
+
+<body class="bg-slate-50 text-slate-800 flex justify-center items-center min-h-screen m-0 font-sans">
+
+    
+
+    <div class="bg-white p-10 rounded-2xl shadow-lg w-[90%] max-w-225 gap-2">
+            <div class="relative mt-10 p-6 bg-indigo-50 rounded-2xl border border-indigo-100">
+                
+                <h2 class="text-xl font-bold text-indigo-900 flex items-center gap-2">
+                        La funcion esta : {{min_max}}
+                    </h2>
+                <h2 class="text-xl font-bold text-indigo-900 mb-4 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    La solución es: {{ solucion }}
+                </h2>
+                
+                <h3 class="text-sm font-semibold text-indigo-400 uppercase tracking-widest mb-3 ml-1">Resultado Final</h3>
+                <div style="width: 80%; margin: auto;">
+                    <canvas id="canvasGrafico"></canvas>
+                </div>
+                
+            <div class="flex flex-col md:flex-row md:items-center gap-4 mb-8">
+            <a href="{{ url_for('index') }}" class="inline-flex items-center justify-center px-5 py-2.5 text-xl font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center shadow-md transform active:scale-95 transition-all">
+                        RESOLVER OTRO EJERCICIO
+            </a>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+    
+    <div>
+        
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='javascript/graphic_method.js') }}"></script>
+    <script>
+        const datos_recibidos = {{ json_matrix | tojson }};
+        inicializarGrafico(datos_recibidos);
+    </script>
+
+</body>
+</html>
