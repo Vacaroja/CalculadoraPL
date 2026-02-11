@@ -1,6 +1,7 @@
 from data.funciones.Ordenador import ordenador
 from data.funciones.get_last_solutions import get_last_result
 from data.funciones.valid_method import valid_method
+from data.funciones.create_variable_names import create_variable_names
 from data.metodos.simplex.SimplexMethod import SimplexMethod
 from data.metodos.grafico.GraphicMethod import metodo_grafico
 from data.metodos.simplex.TwoFases import Twofases
@@ -24,7 +25,8 @@ def index():
 def restricciones():
     metodo = request.form.get("metodo")
     cantVar = request.form.get("CantVar")
-    print(metodo)
+    
+    print(cantVar)
 
     try:
         cantVar = int(request.form.get("CantVar"))
@@ -37,15 +39,15 @@ def restricciones():
 def resultados():
     metodo = request.form.get("metodo")
     min_max = request.form.get("min_max")
-    cantVar = request.form.get("CantVar")
-    print(min_max)
+    cantVar = request.form.get("cantVar")
+    print(cantVar)
     igualdad = request.form.getlist("igualdades[]")
     igualdad.insert(0, "=")
     datos_variables = {}
 
     variable_standard = ["Z"]
     # hacer funcion que use CantVar para agregar los X[] en name_variable
-    name_variable = ["Z", "X1", "X2"]
+    name_variable = create_variable_names(cant_var=cantVar)
     for key in request.form.keys():
         if key.startswith("x"):
             # getlist extrae todos los inputs con el mismo nombre (las filas añadidas)
@@ -110,12 +112,15 @@ def resultados():
                 variable_standard,
                 is_min,
             )
+            soluciones = get_last_result(matrix=matrix)
+            print(variable_standard)
             json_matrix = metodo_grafico(matrix,is_min,igualdad)
             name_variable.append("SOL")
             return render_template(
                 "resultados_grafico.html",
                 json_matrix=json_matrix,
                 solucion = solucion,
+                soluciones = soluciones,
                 var_names=var_names,
                 variable_standard=variable_standard,
                 min_max=min_max
