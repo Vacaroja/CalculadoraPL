@@ -23,9 +23,9 @@ def Twofases(old_matrix,old_name_variable,igualidades,old_variable_standard,isMi
 
     matrix_secondfase,name_variable_Second_fase = delete_artificial_vars(matrix,name_variable_Second_fase,fila_borrada)
 
-    matrix_secondfase,name_variable_Second_fase,variable_standard,solucion = SimplexMethodTwoFases(matrix_secondfase,name_variable_Second_fase,variable_standard,isMin=isMin)
+    matrix_secondfase,name_variable_Second_fase,variable_standard_secondF,solucion = SimplexMethodTwoFases(matrix_secondfase,name_variable_Second_fase,variable_standard[-1],isMin=isMin)
 
-    return matrix,matrix_secondfase,name_variable,name_variable_Second_fase,variable_standard,solucion
+    return matrix,matrix_secondfase,name_variable,name_variable_Second_fase,variable_standard,solucion,variable_standard_secondF
 
 #funcion que devuelve la lista de variables iniciales para la primera fase
 def put_inicial_standard(max_standard,variable_names):

@@ -10,19 +10,23 @@ def SimplexMethod(old_matrix,name_variable,igualidades,variable_standard,isMin):
     name_variable.extend(holgura_and_artificial)
     return SimplexMethodTwoFases(matrix,name_variable,variable_standard,isMin)
 
-def SimplexMethodTwoFases(old_matrix,name_variable,variable_standard,isMin):
+def SimplexMethodTwoFases(old_matrix,name_variable,old_variable_standard,isMin):
     matriz_historica = []
+    historico_standard = []
+    variable_standard = []
+    variable_standard.extend(old_variable_standard)
     solucion = '' #la solucion por defecto es optima unica
     acotada = False #variable para determinar si la solucion es acotada o no, se inicializa en False y se cambia a True si se encuentra que no es acotada
 
     matrix = old_matrix.copy()
     matriz_historica.append(copy.deepcopy(matrix))
-    
+    historico_standard.append(copy.deepcopy(variable_standard))
     while True:
         pivote_row, pivote_col,acotada = encontrar_pivote(matrix,isMin)
         if pivote_col is not None:
             try:
                 variable_standard[pivote_row] = name_variable[pivote_col]
+                historico_standard.append(copy.deepcopy(variable_standard))
             except Exception:
                 variable_standard.append(name_variable[pivote_col])
         if (pivote_col == None and pivote_row == None):
@@ -35,7 +39,8 @@ def SimplexMethodTwoFases(old_matrix,name_variable,variable_standard,isMin):
         matriz_historica.append(copy.deepcopy(matrix))
     if not acotada:
         solucion = find_solution_result(matriz_historica[-1],pivote_col,variable_standard,name_variable)
-    return matriz_historica,name_variable,variable_standard,solucion
+    print(historico_standard)
+    return matriz_historica,name_variable,historico_standard,solucion
 
 def convert_min_to_max(matrix):
     matrix[0] = [matrix[0][0]] + [-1 * x for x in matrix[0][1:-1]] + [matrix[0][-1]]

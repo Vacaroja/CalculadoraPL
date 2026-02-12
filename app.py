@@ -67,20 +67,23 @@ def resultados():
                 variable_standard,
                 valid_method(min_max),
             )
+            print(variable_standard)
             var_names.append("SOL")
+            var_names.insert(0,"")
             soluciones = get_last_result(matrix=matrix)
             return render_template(
                 "resultados_simplex.html",
                 matrix=matrix,
                 var_names=var_names,
-                variable_standard=variable_standard,
+                lista_standard = variable_standard,
+                variable_standard=variable_standard[-1],
                 soluciones=soluciones,
                 min_max=min_max,
                 tipo_solucion = tipo_solucion
                 
             )
         case "dos-pasos":
-            matrix_fase1, matrix_fase2, var_names,name_variable_second_fase,variable_standard,solucion = Twofases(
+            matrix_fase1, matrix_fase2, var_names,name_variable_second_fase,variable_standard,solucion,variable_standard_secondF = Twofases(
                 listaf,
                 name_variable,
                 igualdad,
@@ -90,6 +93,8 @@ def resultados():
             )
             var_names.append("SOL")
             name_variable_second_fase.append("SOL")
+            var_names.insert(0,"")
+            name_variable_second_fase.insert(0,"")
             soluciones = get_last_result(matrix=matrix_fase2)
             return render_template(
                 "resultados_dos_fases.html",
@@ -97,7 +102,9 @@ def resultados():
                 matrix_secondfase=matrix_fase2,#matriz de la segunda fase(historico)
                 var_names=var_names,#variables de la primera fase(con R)
                 var_second = name_variable_second_fase,#variables de la segunda fase
-                variable_standard=variable_standard,#variables estandar para el resultado final
+                lista_standard = variable_standard,
+                variable_standard_secondF = variable_standard_secondF,
+                variable_standard=variable_standard_secondF[-1],#variables estandar para el resultado final
                 soluciones=soluciones,#valores de las soluciones para resultado final
                 min_max=min_max,#variable para saber si es minimizacion o maximizacion
                 solucion = solucion
@@ -122,7 +129,8 @@ def resultados():
                 solucion = solucion,
                 soluciones = soluciones,
                 var_names=var_names,
-                variable_standard=variable_standard,
+                lista_standard = variable_standard,
+                variable_standard=variable_standard[-1],
                 min_max=min_max
                 
             )

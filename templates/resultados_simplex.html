@@ -21,7 +21,6 @@
                 Optimización de Programación Lineal: Simplex, Dos Fases y Método Gráfico.
             </p>
         </div>
-        0
             <div class="mt-10 p-6 bg-indigo-50 rounded-2xl border border-indigo-100">
                 
                 <h2 class="text-xl font-bold text-indigo-900 mb-4 flex items-center gap-2">
@@ -70,8 +69,9 @@
         </h2>
 
         <div class="space-y-12 ">
-            {% for listaf in matrix %}
+            {% for listaf in range(matrix|length) %}
             <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white">
+                
                 <table class="w-full border-collapse text-left text-sm">
                     <thead class="bg-slate-50">
                         <tr>
@@ -84,8 +84,12 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
-                        {% for row in listaf %}
-                        <tr class="hover:bg-indigo-50/50 transition-colors">
+                        
+                        {% for row in matrix[listaf] %}
+                            <tr class="hover:bg-indigo-50/50 transition-colors">
+                            <th scope="row" class="px-6 py-4 bg-slate-100 text-slate-800 font-extrabold border-r text-center whitespace-nowrap">
+                                {{ lista_standard[listaf][loop.index0] }}
+                            </th>
                             {% for cell in row %}
                             <td class="px-6 py-4 text-slate-600 text-center font-medium">
                                 <span class="{% if cell == 0 or cell == '0' %}text-slate-300 font-normal{% endif %}">
