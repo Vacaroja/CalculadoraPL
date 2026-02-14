@@ -40,7 +40,6 @@ def resultados():
     metodo = request.form.get("metodo")
     min_max = request.form.get("min_max")
     cantVar = request.form.get("cantVar")
-    print(cantVar)
     igualdad = request.form.getlist("igualdades[]")
     igualdad.insert(0, "=")
     datos_variables = {}
@@ -56,8 +55,7 @@ def resultados():
     resultados = request.form.getlist("res[]")
 
     datos_variables["res[]"] = request.form.getlist("res[]")
-    listaf = ordenador(datos_variables)
-    print(metodo)
+    listaf = ordenador(datos_variables,metodo=='grafico')
     match (metodo):
         case "simplex":
             matrix, var_names, variable_standard,tipo_solucion = SimplexMethod(
@@ -110,27 +108,12 @@ def resultados():
                 solucion = solucion
             )
         case 'grafico':
-            print("por aqui no")
             is_min = valid_method(min_max)
-            matrix, var_names, variable_standard,solucion = SimplexMethod(
-                listaf,
-                name_variable,
-                igualdad,
-                variable_standard,
-                is_min,
-            )
-            soluciones = get_last_result(matrix=matrix)
             print(variable_standard)
-            json_matrix = metodo_grafico(matrix,is_min,igualdad)
-            name_variable.append("SOL")
+            json_matrix = metodo_grafico(listaf,is_min,igualdad)
             return render_template(
                 "resultados_grafico.html",
                 json_matrix=json_matrix,
-                solucion = solucion,
-                soluciones = soluciones,
-                var_names=var_names,
-                lista_standard = variable_standard,
-                variable_standard=variable_standard[-1],
                 min_max=min_max
                 
             )

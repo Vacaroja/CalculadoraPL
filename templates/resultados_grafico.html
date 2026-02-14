@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
 </head>
 
-<body class="bg-slate-50 text-slate-800 flex justify-center items-center min-h-screen m-0 font-sans">
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen m-0 font-sans">
 
     
 
-    <div class="bg-white p-10 rounded-2xl shadow-lg w-[90%] max-w-225 gap-2">
+    <main class="flex grow items-center justify-center p-6">
+        <div class="bg-white p-10 rounded-2xl shadow-lg w-full max-w-4xl border border-slate-100">
         <div class="text-center mb-12">
             <h1 class="text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">
                 P.L Solutions
@@ -35,12 +36,12 @@
                 
                 <h2 class="text-xl font-bold text-indigo-900 flex items-center gap-2">
                         La funcion esta : {{min_max}}
-                    </h2>
+                </h2>
                 <h2 class="text-xl font-bold text-indigo-900 mb-4 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    La solución es: {{ solucion }}
+                    La solución es: {{ json_matrix.tipo }}
                 </h2>
                 
                 
@@ -50,23 +51,36 @@
                         <table class="min-w-full divide-y divide-indigo-100">
                             <thead class="bg-indigo-50">
                                 <tr>
-                                    {% for standar in variable_standard %}
                                     <th class="px-6 py-3 text-center text-lg font-bold text-indigo-500 uppercase tracking-wider">
-                                        {{ standar }} 
+                                        Z
                                     </th>
-                                    {% endfor %}
+                                    <th class="px-6 py-3 text-center text-lg font-bold text-indigo-500 uppercase tracking-wider">
+                                        X
+                                    </th>
+                                    <th class="px-6 py-3 text-center text-lg font-bold text-indigo-500 uppercase tracking-wider">
+                                        Y 
+                                    </th>
+                                    
                                 </tr>
                             </thead>
                             
                             <tbody class="divide-y divide-indigo-100">
                                 <tr>
-                                    {% for solutions in soluciones %}
                                     <td class="px-6 py-4 text-center whitespace-nowrap">
                                         <div class="text-lg font-extrabold text-slate-800">
-                                            {{ "%.2f"|format(solutions) if solutions is number else solutions }}
+                                            {{ "%.2f"|format(json_matrix.valor_z + 0) if json_matrix.valor_z is number else json_matrix.valor_z }}
                                         </div>
                                     </td>
-                                    {% endfor %}
+                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                        <div class="text-lg font-extrabold text-slate-800">
+                                            {{ "%.2f"|format(json_matrix.optimo.x + 0) if json_matrix.optimo.x is number else json_matrix.optimo.x }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                        <div class="text-lg font-extrabold text-slate-800">
+                                            {{ "%.2f"|format(json_matrix.optimo.y + 0) if json_matrix.optimo.y is number else json_matrix.optimo.y }}
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -80,13 +94,14 @@
             <a href="{{ url_for('index') }}" class="block w-full items-center justify-center px-5 py-2.5 text-xl font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center shadow-md transform active:scale-95 transition-all">
                         RESOLVER OTRO EJERCICIO
             </a>
+                </div>
             </div>
+            
+            
+            
         </div>
-        
-        
-        
-    </div>
-    <footer class="absolute bottom-6 text-slate-400 text-sm">
+    </main>
+    <footer class="w-full py-6 text-center text-slate-400 text-sm bg-white border-t border-slate-100">
         <p>© 2026 <a href="https://vacaroja.github.io/"><span class="font-semibold text-indigo-500/80">Andres Alfonzo</span></a> | Desarrollado con Flask & Tailwind para la Materia de Programacion Lineal</p>
     </footer>
 
