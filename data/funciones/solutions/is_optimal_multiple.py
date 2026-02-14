@@ -7,6 +7,7 @@ def indices_basicos(variable_names,variable_standard):
 
 def is_optimal_multiple(matrix,variable_names,variable_standard):
     indices = indices_basicos(variable_names,variable_standard)
+    print(f"indices basico {indices}")
     first_row = matrix[0]
     for i in range(len(first_row)-1):
         if i not in indices and abs(first_row[i]) < 1e-9:
