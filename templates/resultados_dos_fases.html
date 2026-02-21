@@ -114,6 +114,8 @@
                 </div>
                 {% endfor %}
             </div>
+            {% if not solucion == 'No Factible' %}
+
             <h2 class="text-2xl font-extrabold text-slate-800 mb-6 flex items-center gap-2 pt-3">
                 <span class="bg-indigo-500 w-2 h-8 rounded-full"></span>
                     Fase 2:
@@ -150,7 +152,12 @@
                         </tbody>
                     </table>
                 </div>
-                {% endfor %}
+                        {% endfor %}
+            {% else %}
+                <h2 class="text-2xl font-extrabold text-slate-800 mb-6 flex items-center gap-2 pt-3">
+                        Funcion no Factible
+                </h2>
+            {% endif %}
                 <div class="flex flex-col md:flex-row md:items-center gap-4 mb-8">
                 <a href="{{ url_for('index') }}" class="block w-full items-center justify-center px-5 py-2.5 text-xl font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center shadow-md transform active:scale-95 transition-all">
                             RESOLVER OTRO EJERCICIO
