@@ -26,7 +26,6 @@ def restricciones():
     metodo = request.form.get("metodo")
     cantVar = request.form.get("CantVar")
     
-    print(cantVar)
 
     try:
         cantVar = int(request.form.get("CantVar"))
@@ -56,6 +55,7 @@ def resultados():
 
     datos_variables["res[]"] = request.form.getlist("res[]")
     listaf = ordenador(datos_variables,metodo=='grafico')
+    
     match (metodo):
         case "simplex":
             matrix, var_names, variable_standard,tipo_solucion = SimplexMethod(
@@ -65,7 +65,6 @@ def resultados():
                 variable_standard,
                 valid_method(min_max),
             )
-            print(variable_standard)
             var_names.append("SOL")
             var_names.insert(0,"")
             soluciones = get_last_result(matrix=matrix)
@@ -89,27 +88,43 @@ def resultados():
                 valid_method(min_max),
                 
             )
+            
             var_names.append("SOL")
             name_variable_second_fase.append("SOL")
             var_names.insert(0,"")
             name_variable_second_fase.insert(0,"")
-            soluciones = get_last_result(matrix=matrix_fase2)
-            return render_template(
-                "resultados_dos_fases.html",
-                matrix=matrix_fase1,#matriz de la primera fase(historico)
-                matrix_secondfase=matrix_fase2,#matriz de la segunda fase(historico)
-                var_names=var_names,#variables de la primera fase(con R)
-                var_second = name_variable_second_fase,#variables de la segunda fase
-                lista_standard = variable_standard,
-                variable_standard_secondF = variable_standard_secondF,
-                variable_standard=variable_standard_secondF[-1],#variables estandar para el resultado final
-                soluciones=soluciones,#valores de las soluciones para resultado final
-                min_max=min_max,#variable para saber si es minimizacion o maximizacion
-                solucion = solucion
-            )
+            if (solucion == "No Factible"):
+                soluciones = get_last_result(matrix=matrix_fase1)
+                return render_template(
+                    "resultados_dos_fases.html",
+                    matrix=matrix_fase1,#matriz de la primera fase(historico)
+                    matrix_secondfase=[],#matriz de la segunda fase(historico)
+                    var_names=var_names,#variables de la primera fase(con R)
+                    var_second = name_variable_second_fase,#variables de la segunda fase
+                    lista_standard = variable_standard,
+                    variable_standard_secondF = variable_standard,
+                    variable_standard=variable_standard[-1],#variables estandar para el resultado final
+                    soluciones=soluciones,#valores de las soluciones para resultado final
+                    min_max=min_max,#variable para saber si es minimizacion o maximizacion
+                    solucion = solucion
+                )
+            else:
+                soluciones = get_last_result(matrix=matrix_fase2)
+                return render_template(
+                    "resultados_dos_fases.html",
+                    matrix=matrix_fase1,#matriz de la primera fase(historico)
+                    matrix_secondfase=matrix_fase2,#matriz de la segunda fase(historico)
+                    var_names=var_names,#variables de la primera fase(con R)
+                    var_second = name_variable_second_fase,#variables de la segunda fase
+                    lista_standard = variable_standard,
+                    variable_standard_secondF = variable_standard_secondF,
+                    variable_standard=variable_standard_secondF[-1],#variables estandar para el resultado final
+                    soluciones=soluciones,#valores de las soluciones para resultado final
+                    min_max=min_max,#variable para saber si es minimizacion o maximizacion
+                    solucion = solucion
+                )
         case 'grafico':
             is_min = valid_method(min_max)
-            print(variable_standard)
             json_matrix = metodo_grafico(listaf,is_min,igualdad)
             return render_template(
                 "resultados_grafico.html",
