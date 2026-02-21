@@ -1,12 +1,13 @@
 def ordenador(diccionario,isGraphic):
-    print(isGraphic)
     lista_inicial = [list(map(float, v)) for k, v in diccionario.items() if '[]' in k]
-    if isGraphic:
-        lista_inicial[-1].insert(0,1)
-    else:
-        lista_inicial[-1].insert(0,-1)
+    lista_inicial[-1].insert(0,1)
     lista_traspuesta = list(zip(*lista_inicial))
-    columnas_revertidas = [list(c)[::-1] for c in lista_traspuesta]
+    columnas_revertidas = [list(c) for c in (lista_traspuesta)]
+    del columnas_revertidas[0][-1]
+    if isGraphic:
+        columnas_revertidas[0].insert(0,1)
+    else:
+        columnas_revertidas[0].insert(0,-1)
     columnas_revertidas = add_zeros(columnas_revertidas)
     if not isGraphic:
         columnas_revertidas[0] = [x * -1 for x in columnas_revertidas[0]]
