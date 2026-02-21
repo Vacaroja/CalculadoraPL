@@ -5,9 +5,7 @@ from data.metodos.simplex.SimplexMethod import SimplexMethod
 
 def metodo_grafico(matrix,is_min,igualdades):
     matriz = normalizar_matriz(matrix,igualdades)
-    print("matriz normalizada",matriz)
     resultado = procesar_grafico_completo(matriz, is_min)
-    print("resultado grafico",resultado)
     return resultado
 
 

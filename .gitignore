@@ -4,3 +4,4 @@ venv
 .gitignore
 .gitignore
 *.py[cod]
+tailwindcss.txt

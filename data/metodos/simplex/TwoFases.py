@@ -17,11 +17,14 @@ def Twofases(old_matrix,old_name_variable,igualidades,old_variable_standard,isMi
     matrix_first_fase = definir_fila_artificial(matrix_first_fase,name_variable)
     
     matrix,name_variable,variable_standard,solucion = SimplexMethodTwoFases(matrix_first_fase,name_variable,old_variable_standard,isMin=True)
-    if solucion == 'no acotada' or solucion == 'No Factible':
-        return matrix,matrix,name_variable,name_variable,old_variable_standard,solucion
+    if solucion == 'No Factible':
+        return matrix,[],name_variable,name_variable_Second_fase,variable_standard,solucion,[]
     name_variable_Second_fase.extend(name_variable)
 
     matrix_secondfase,name_variable_Second_fase = delete_artificial_vars(matrix,name_variable_Second_fase,fila_borrada)
+    
+    matrix_secondfase = estandarizar_automatico(matrix_secondfase,name_variable_Second_fase,variable_standard)
+    
 
     matrix_secondfase,name_variable_Second_fase,variable_standard_secondF,solucion = SimplexMethodTwoFases(matrix_secondfase,name_variable_Second_fase,variable_standard[-1],isMin=isMin)
 
@@ -55,6 +58,34 @@ def definir_fila_artificial(matrix,name_variable):
     matrix[0] = matriz_nueva
     return matrix
     
+def estandarizar_automatico(matrix, name_variable,variable_estandar, letra_objetivo="X"):
+    total_columnas = len(matrix[0])
+    # Recorremos desde la fila 1 en adelante
+    for i in range(1, len(matrix)):
+        finded_variable = False
+        variable_en_fila = name_variable[i]
+        for nombrevar in variable_estandar:
+            if variable_en_fila in nombrevar:
+                finded_variable = True
+                break
+        if finded_variable:
+            # 1. Buscamos dónde está el "1" de esa variable en su propia fila
+            # (Normalmente es la columna que coincide con el nombre de la variable)
+            try:
+                columna_pivote = name_variable.index(variable_en_fila)
+            except ValueError:
+                continue
+            
+            # 2. El multiplicador es el inverso del valor que hay en la fila 0
+            valor_a_eliminar = matrix[0][columna_pivote]
+            multiplicador = -valor_a_eliminar
+            
+            # 3. Aplicamos la operación a toda la fila 0
+            if multiplicador != 0:
+                for col in range(total_columnas):
+                    matrix[0][col] += multiplicador * matrix[i][col]
+                    
+    return matrix
 
 def delete_artificial_vars(matrix,name_variable,fila_borrada):
     indices_a_borrar = []
@@ -67,7 +98,6 @@ def delete_artificial_vars(matrix,name_variable,fila_borrada):
     
     for index in sorted(indices_a_borrar,reverse=True):
         for row in last_matrix:
-            print(row)
             del row[index]
         del name_variable[index]
     

@@ -39,7 +39,6 @@ def SimplexMethodTwoFases(old_matrix,name_variable,old_variable_standard,isMin):
         matriz_historica.append(copy.deepcopy(matrix))
     if not acotada:
         solucion = find_solution_result(matriz_historica[-1],pivote_col,variable_standard,name_variable)
-    print(historico_standard)
     return matriz_historica,name_variable,historico_standard,solucion
 
 def convert_min_to_max(matrix):
